@@ -1,1 +1,729 @@
-Hallo
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perangkat Keras Komputer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .slide {
+            display: none;
+            padding: 50px 40px;
+            min-height: 600px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .slide h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #764ba2;
+            padding-bottom: 15px;
+        }
+
+        .slide h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+        }
+
+        .content-text {
+            color: #333;
+            line-height: 1.8;
+            font-size: 1.05em;
+            margin-bottom: 20px;
+        }
+
+        .objective-list, .material-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .objective-list li, .material-list li {
+            background: #f0e7ff;
+            margin: 12px 0;
+            padding: 15px 20px;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+            color: #333;
+        }
+
+        .device-card {
+            background: linear-gradient(135deg, #f5f7ff 0%, #f0e7ff 100%);
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            transition: transform 0.3s ease;
+        }
+
+        .device-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .device-card h4 {
+            color: #667eea;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .quiz-question {
+            background: #f5f7ff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .quiz-question h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .quiz-options {
+            list-style: none;
+        }
+
+        .quiz-options li {
+            background: white;
+            margin: 10px 0;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .quiz-options li:hover {
+            border-color: #667eea;
+            background: #f9f7ff;
+        }
+
+        .quiz-options li input {
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .result-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+            font-weight: bold;
+        }
+
+        .result-message.correct {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .result-message.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .task-box {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .task-box h4 {
+            color: #f57c00;
+            margin-bottom: 10px;
+        }
+
+        .task-box ol {
+            margin-left: 20px;
+            color: #333;
+            line-height: 1.8;
+        }
+
+        .conclusion-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .conclusion-box p {
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.05em;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: #f5f5f5;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 5px;
+            background: #e0e0e0;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        table tr:hover {
+            background: #f5f7ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="header">
+            <h1>🖥️ Perangkat Keras Komputer</h1>
+            <p>Sistem Komputer - Bab 1, Bagian A</p>
+        </div>
+
+        <!-- SLIDE 1: Judul dan Pendahuluan -->
+        <div class="slide active">
+            <h2>Selamat Datang!</h2>
+            <div class="content-text">
+                <p>Dalam modul pembelajaran ini, kita akan mempelajari berbagai perangkat keras komputer yang menjadi komponen penting dalam sistem komputer.</p>
+                <p style="margin-top: 30px; font-size: 1.2em; color: #667eea;"><strong>Pertanyaan Pembuka:</strong></p>
+                <p>Pernahkah kalian bertanya-tanya, bagaimana cara kerja keyboard, mouse, atau monitor untuk berkomunikasi dengan komputer? Mari kita pelajari bersama!</p>
+            </div>
+
+            <div class="conclusion-box">
+                <h3 style="margin-bottom: 15px;">Apa yang akan kita pelajari?</h3>
+                <p>✓ Jenis-jenis perangkat input</p>
+                <p>✓ Jenis-jenis perangkat output</p>
+                <p>✓ Komponen perangkat proses</p>
+                <p>✓ Media penyimpanan data</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: Tujuan Pembelajaran -->
+        <div class="slide">
+            <h2>📚 Tujuan Pembelajaran</h2>
+            <p class="content-text">Setelah mempelajari materi ini, kalian diharapkan mampu:</p>
+            <ul class="objective-list">
+                <li><strong>1.</strong> Memahami pengertian perangkat keras (hardware) komputer dengan baik</li>
+                <li><strong>2.</strong> Mengidentifikasi berbagai jenis perangkat input dan fungsinya</li>
+                <li><strong>3.</strong> Menjelaskan fungsi perangkat output dalam sistem komputer</li>
+                <li><strong>4.</strong> Memahami peran perangkat proses (CPU dan komponen lainnya)</li>
+                <li><strong>5.</strong> Mengetahui berbagai media penyimpanan data dan karakteristiknya</li>
+                <li><strong>6.</strong> Mengaplikasikan pengetahuan tentang perangkat keras dalam kehidupan sehari-hari</li>
+            </ul>
+        </div>
+
+        <!-- SLIDE 3: Pengertian Hardware -->
+        <div class="slide">
+            <h2>💡 Apa itu Perangkat Keras?</h2>
+            <div class="device-card">
+                <h4>Definisi Perangkat Keras (Hardware)</h4>
+                <p class="content-text">Perangkat keras adalah komponen fisik dari komputer yang dapat dilihat dan disentuh. Perangkat keras berfungsi untuk menerima input, memproses data, menghasilkan output, dan menyimpan data.</p>
+            </div>
+
+            <h3>Klasifikasi Perangkat Keras:</h3>
+            <div class="device-card">
+                <h4>1️⃣ Perangkat Input (Masukan)</h4>
+                <p>Alat untuk memasukkan data ke dalam komputer (contoh: keyboard, mouse, scanner)</p>
+            </div>
+
+            <div class="device-card">
+                <h4>2️⃣ Perangkat Output (Keluaran)</h4>
+                <p>Alat untuk menampilkan hasil pemrosesan data (contoh: monitor, printer, speaker)</p>
+            </div>
+
+            <div class="device-card">
+                <h4>3️⃣ Perangkat Proses</h4>
+                <p>Alat untuk memproses data (contoh: CPU, RAM, VGA)</p>
+            </div>
+
+            <div class="device-card">
+                <h4>4️⃣ Media Penyimpanan</h4>
+                <p>Alat untuk menyimpan data secara permanen atau sementara (contoh: Hard Disk, SSD, USB)</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: Perangkat Input -->
+        <div class="slide">
+            <h2>⌨️ Perangkat Input (Masukan)</h2>
+            <p class="content-text"><strong>Fungsi:</strong> Memasukkan data, informasi, dan instruksi ke dalam sistem komputer untuk diproses lebih lanjut.</p>
+
+            <div class="device-card">
+                <h4>🔤 Keyboard</h4>
+                <p><strong>Fungsi:</strong> Mengetikkan huruf, angka, simbol, dan menjalankan perintah melalui kombinasi tombol</p>
+                <p><strong>Jenis Layout:</strong> QWERTY, DVORAK, KLOCKENBERG</p>
+                <p><strong>Kegunaan:</strong> Mengetik dokumen, menulis pesan, menggunakan shortcut</p>
+            </div>
+
+            <div class="device-card">
+                <h4>🖱️ Mouse</h4>
+                <p><strong>Fungsi:</strong> Menggerakkan pointer/kursor pada layar komputer</p>
+                <p><strong>Komponen:</strong> Tombol kiri (klik), tombol kanan (menu), scroll wheel (gulung)</p>
+                <p><strong>Operasi:</strong> Single click, double click, right click, drag and drop</p>
+            </div>
+
+            <div class="device-card">
+                <h4>🖲️ Touchpad</h4>
+                <p><strong>Fungsi:</strong> Menggerakkan kursor pada laptop/notebook</p>
+                <p><strong>Cara Kerja:</strong> Menggunakan sentuhan jari di permukaan yang sensitif</p>
+                <p><strong>Keunggulan:</strong> Praktis dan terintegrasi pada laptop</p>
+            </div>
+
+            <div class="device-card">
+                <h4>📠 Scanner</h4>
+                <p><strong>Fungsi:</strong> Memindai dokumen fisik dan mengubahnya menjadi format digital</p>
+                <p><strong>Teknologi:</strong> Menggunakan sensor cahaya (CCD atau CIS)</p>
+                <p><strong>Output Format:</strong> JPEG, PNG, TIFF, PDF</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: Perangkat Output -->
+        <div class="slide">
+            <h2>🖥️ Perangkat Output (Keluaran)</h2>
+            <p class="content-text"><strong>Fungsi:</strong> Menampilkan atau mengeluarkan hasil pemrosesan data dari komputer dalam bentuk yang dapat dipahami pengguna.</p>
+
+            <div class="device-card">
+                <h4>📺 Monitor</h4>
+                <p><strong>Fungsi:</strong> Menampilkan informasi, gambar, video, dan antarmuka grafis</p>
+                <p><strong>Cara Kerja:</strong> Menerima sinyal dari GPU dan menampilkan ribuan pixel berwarna</p>
+                <p><strong>Jenis:</strong> LCD, LED, OLED</p>
+            </div>
+
+            <div class="device-card">
+                <h4>🖨️ Printer</h4>
+                <p><strong>Fungsi:</strong> Mencetak dokumen, gambar, atau foto dari format digital ke media fisik</p>
+                <p><strong>Jenis-jenis:</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Printer Inkjet - untuk foto berkualitas tinggi</li>
+                    <li>Printer Laser - untuk volume besar dan cepat</li>
+                    <li>Printer Dot Matrix - untuk cetakan rangkap</li>
+                </ul>
+            </div>
+
+            <div class="device-card">
+                <h4>📽️ Proyektor</h4>
+                <p><strong>Fungsi:</strong> Memproyeksikan gambar/video ke layar besar</p>
+                <p><strong>Jenis:</strong> DLP, LCD, Laser, LED/Pico Proyektor</p>
+                <p><strong>Kegunaan:</strong> Presentasi, pendidikan, hiburan</p>
+            </div>
+
+            <div class="device-card">
+                <h4>🔊 Speaker</h4>
+                <p><strong>Fungsi:</strong> Menghasilkan suara dari komputer</p>
+                <p><strong>Output Audio:</strong> Musik, efek suara, narasi, suara sistem</p>
+                <p><strong>Alternatif:</strong> Headset dan Earphone untuk penggunaan pribadi</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: Perangkat Proses -->
+        <div class="slide">
+            <h2>⚙️ Perangkat Proses</h2>
+            <p class="content-text"><strong>Fungsi:</strong> Memproses data dan menjalankan instruksi program. Komponen ini adalah "otak" dari sistem komputer.</p>
+
+            <div class="device-card">
+                <h4>🧠 CPU (Central Processing Unit)</h4>
+                <p><strong>Fungsi:</strong> Memproses instruksi, melakukan perhitungan, dan mengontrol semua operasi komputer</p>
+                <p><strong>Tugas Utama:</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Mengambil dan mengeksekusi instruksi dari memori</li>
+                    <li>Melakukan operasi aritmatika dan logika</li>
+                    <li>Mengontrol aliran data antar komponen</li>
+                </ul>
+            </div>
+
+            <div class="device-card">
+                <h4>💾 RAM (Random Access Memory)</h4>
+                <p><strong>Fungsi:</strong> Menyimpan data dan instruksi program yang sedang diproses</p>
+                <p><strong>Karakteristik:</strong> Volatile (data hilang saat komputer mati)</p>
+                <p><strong>Kegunaan:</strong> Mempercepat akses data dan mendukung multitasking</p>
+            </div>
+
+            <div class="device-card">
+                <h4>🎨 VGA (Video Graphics Array)</h4>
+                <p><strong>Fungsi:</strong> Menerjemahkan data visual menjadi sinyal yang dapat ditampilkan di monitor</p>
+                <p><strong>Produsen Terkenal:</strong> NVIDIA, ATI Radeon</p>
+                <p><strong>Kebutuhan:</strong> Penting untuk desain grafis dan gaming</p>
+            </div>
+
+            <div class="device-card">
+                <h4>📱 Motherboard</h4>
+                <p><strong>Fungsi:</strong> "Saraf pusat" yang menghubungkan semua komponen komputer</p>
+                <p><strong>Tugas:</strong> Mengontrol komunikasi antar perangkat agar sistem berjalan terkoordinasi</p>
+                <p><strong>Jenis:</strong> Single processor atau Dual processor</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: Media Penyimpanan -->
+        <div class="slide">
+            <h2>💿 Media Penyimpanan Data</h2>
+            <p class="content-text"><strong>Fungsi:</strong> Menyimpan data dan informasi secara permanen atau sementara dalam sistem komputer.</p>
+
+            <div class="device-card">
+                <h4>🗄️ Hard Disk Drive (HDD)</h4>
+                <p><strong>Fungsi:</strong> Penyimpanan utama untuk sistem operasi, aplikasi, dan file pengguna</p>
+                <p><strong>Jenis:</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li><strong>PATA (IDE):</strong> Teknologi generasi lama dengan kabel pita lebar</li>
+                    <li><strong>SATA:</strong> Lebih cepat, kabel lebih ramping, mendukung hot-swapping</li>
+                </ul>
+                <p><strong>Kecepatan SATA:</strong> 150 - 600 MB/s</p>
+            </div>
+
+            <div class="device-card">
+                <h4>⚡ SSD (Solid State Drive)</h4>
+                <p><strong>Fungsi:</strong> Penyimpanan modern dengan kecepatan sangat tinggi</p>
+                <p><strong>Keunggulan:</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>Kecepatan baca/tulis hingga 7000 MB/s</li>
+                    <li>Lebih tahan goncangan dan tidak ada komponen bergerak</li>
+                    <li>Hemat daya dan lebih senyap</li>
+                </ul>
+                <p><strong>Interface:</strong> SATA, M.2, PCIe NVMe</p>
+            </div>
+
+            <div class="device-card">
+                <h4>📀 Optical Drive</h4>
+                <p><strong>Fungsi:</strong> Membaca dan menulis data pada CD, DVD, Blu-ray</p>
+                <p><strong>Jenis:</strong> CD-ROM, CD-RW, DVD-ROM, DVD-RW</p>
+                <p><strong>Teknologi:</strong> Menggunakan laser untuk membaca data</p>
+            </div>
+
+            <div class="device-card">
+                <h4>🎯 USB Flash Drive</h4>
+                <p><strong>Fungsi:</strong> Penyimpanan portabel dengan teknologi flash memory</p>
+                <p><strong>Kapasitas:</strong> 8 GB hingga 2 TB</p>
+                <p><strong>Keunggulan:</strong> Praktis, mudah dibawa, dan dapat digunakan di berbagai perangkat</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: Ringkasan Materi -->
+        <div class="slide">
+            <h2>📋 Ringkasan Materi</h2>
+            <table>
+                <tr>
+                    <th>Kategori</th>
+                    <th>Perangkat</th>
+                    <th>Fungsi Utama</th>
+                </tr>
+                <tr>
+                    <td><strong>Input</strong></td>
+                    <td>Keyboard, Mouse, Touchpad, Scanner</td>
+                    <td>Memasukkan data ke komputer</td>
+                </tr>
+                <tr>
+                    <td><strong>Output</strong></td>
+                    <td>Monitor, Printer, Proyektor, Speaker</td>
+                    <td>Menampilkan hasil pemrosesan</td>
+                </tr>
+                <tr>
+                    <td><strong>Proses</strong></td>
+                    <td>CPU, RAM, VGA, Motherboard</td>
+                    <td>Memproses dan mengontrol data</td>
+                </tr>
+                <tr>
+                    <td><strong>Penyimpanan</strong></td>
+                    <td>HDD, SSD, Optical Drive, USB Flash</td>
+                    <td>Menyimpan data secara permanen</td>
+                </tr>
+            </table>
+
+            <div class="conclusion-box" style="margin-top: 30px;">
+                <h3>Kesimpulan Materi</h3>
+                <p>Perangkat keras komputer bekerja secara sinergis untuk menciptakan sistem yang fungsional. Setiap komponen memiliki peran penting dalam proses input, processing, output, dan storage data. Pemahaman tentang perangkat keras membantu kita menggunakan komputer dengan lebih efektif dan bijak.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: Kuis -->
+        <div class="slide">
+            <h2>🎓 Kuis Pemahaman</h2>
+
+            <div class="quiz-question">
+                <h4>Pertanyaan 1: Fungsi utama keyboard adalah...</h4>
+                <ul class="quiz-options">
+                    <li><input type="radio" name="q1" value="a"> A) Menampilkan gambar di layar</li>
+                    <li><input type="radio" name="q1" value="b"> B) Memasukkan data dan menjalankan perintah</li>
+                    <li><input type="radio" name="q1" value="c"> C) Mencetak dokumen ke kertas</li>
+                    <li><input type="radio" name="q1" value="d"> D) Menyimpan data secara permanen</li>
+                </ul>
+                <button class="btn" style="margin-top: 15px; background: #ff9800;" onclick="checkAnswer(1, 'b', 'Benar! Keyboard adalah perangkat input untuk memasukkan data.')">Periksa Jawaban</button>
+                <div class="result-message" id="result1"></div>
+            </div>
+
+            <div class="quiz-question">
+                <h4>Pertanyaan 2: CPU adalah...</h4>
+                <ul class="quiz-options">
+                    <li><input type="radio" name="q2" value="a"> A) Perangkat output untuk menampilkan gambar</li>
+                    <li><input type="radio" name="q2" value="b"> B) "Otak" komputer yang memproses instruksi</li>
+                    <li><input type="radio" name="q2" value="c"> C) Media penyimpanan data jangka panjang</li>
+                    <li><input type="radio" name="q2" value="d"> D) Alat untuk menggerakkan kursor</li>
+                </ul>
+                <button class="btn" style="margin-top: 15px; background: #ff9800;" onclick="checkAnswer(2, 'b', 'Benar! CPU (Central Processing Unit) adalah otak dari komputer.')">Periksa Jawaban</button>
+                <div class="result-message" id="result2"></div>
+            </div>
+
+            <div class="quiz-question">
+                <h4>Pertanyaan 3: Perbedaan utama HDD dan SSD adalah...</h4>
+                <ul class="quiz-options">
+                    <li><input type="radio" name="q3" value="a"> A) HDD lebih cepat dari SSD</li>
+                    <li><input type="radio" name="q3" value="b"> B) SSD tidak memiliki komponen bergerak dan lebih cepat</li>
+                    <li><input type="radio" name="q3" value="c"> C) Keduanya memiliki kecepatan sama</li>
+                    <li><input type="radio" name="q3" value="d"> D) HDD hanya untuk komputer lama</li>
+                </ul>
+                <button class="btn" style="margin-top: 15px; background: #ff9800;" onclick="checkAnswer(3, 'b', 'Benar! SSD lebih cepat karena tidak memiliki komponen bergerak seperti HDD.')">Periksa Jawaban</button>
+                <div class="result-message" id="result3"></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: Tugas -->
+        <div class="slide">
+            <h2>✏️ Tugas Pembelajaran</h2>
+
+            <div class="task-box">
+                <h4>📌 Tugas 1: Analisis Perangkat Keras</h4>
+                <p class="content-text">Identifikasi minimal 5 (lima) perangkat keras komputer yang ada di laboratorium sekolah atau di rumah kalian. Untuk setiap perangkat, jelaskan:</p>
+                <ol>
+                    <li>Nama perangkat keras</li>
+                    <li>Kategori (input/output/proses/penyimpanan)</li>
+                    <li>Fungsi utamanya</li>
+                    <li>Spesifikasi jika diketahui</li>
+                </ol>
+            </div>
+
+            <div class="task-box">
+                <h4>📌 Tugas 2: Membuat Diagram Alur Data</h4>
+                <p class="content-text">Buatlah diagram yang menunjukkan bagaimana alur data mengalir dalam sistem komputer dari:</p>
+                <ol>
+                    <li>Perangkat Input → Proses → Output</li>
+                    <li>Jelaskan perangkat apa saja yang terlibat di setiap tahap</li>
+                    <li>Berikan contoh kasus nyata (misalnya: mengetik dokumen dan mencetak)</li>
+                </ol>
+            </div>
+
+            <div class="task-box">
+                <h4>📌 Tugas 3: Perbandingan Perangkat</h4>
+                <p class="content-text">Buatlah tabel perbandingan antara beberapa perangkat yang memiliki fungsi serupa dan jelaskan kelebihan serta kekurangannya.</p>
+            </div>
+
+            <div class="task-box">
+                <h4>📌 Tugas 4: Proyek Kelompok</h4>
+                <p class="content-text">Bekerja dalam kelompok 3-4 orang untuk membuat presentasi tentang "Evolusi Perangkat Keras Komputer dari Masa ke Masa" dan dampaknya terhadap produktivitas pengguna.</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: Kesimpulan -->
+        <div class="slide">
+            <h2>🎯 Kesimpulan</h2>
+            
+            <div class="conclusion-box">
+                <h3>Poin-Poin Penting yang Telah Dipelajari:</h3>
+                <p><strong>1. Perangkat Input:</strong> Keyboard, mouse, touchpad, dan scanner memungkinkan pengguna memasukkan data dan perintah ke dalam komputer untuk diproses.</p>
+                
+                <p><strong>2. Perangkat Output:</strong> Monitor, printer, proyektor, dan speaker menampilkan hasil pemrosesan data dalam bentuk yang dapat dimengerti manusia.</p>
+                
+                <p><strong>3. Perangkat Proses:</strong> CPU adalah "otak" komputer yang memproses semua instruksi, didukung oleh RAM, VGA, dan Motherboard untuk operasi yang optimal.</p>
+                
+                <p><strong>4. Media Penyimpanan:</strong> HDD, SSD, Optical Drive, dan USB Flash Drive menyimpan data secara permanen agar dapat diakses kembali di masa depan.</p>
+                
+                <p><strong>5. Sinergi Komponen:</strong> Semua perangkat keras bekerja secara terintegrasi mengikuti alur Input → Proses → Output → Penyimpanan untuk menciptakan sistem komputer yang fungsional.</p>
+            </div>
+
+            <h3 style="margin-top: 30px;">Manfaat Mempelajari Perangkat Keras:</h3>
+            <div class="device-card" style="background: #e8f5e9; border-color: #4caf50;">
+                <ul style="margin-left: 20px; color: #333;">
+                    <li>Memahami cara kerja komputer secara keseluruhan</li>
+                    <li>Dapat melakukan troubleshooting sederhana</li>
+                    <li>Memilih perangkat yang sesuai dengan kebutuhan</li>
+                    <li>Merawat komputer dengan baik dan benar</li>
+                    <li>Mengoptimalkan penggunaan sumber daya komputer</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: Pesan Penutup -->
+        <div class="slide">
+            <h2>🌟 Selamat!</h2>
+            
+            <div style="text-align: center; padding: 40px 0;">
+                <p class="content-text" style="font-size: 1.2em;">Kalian telah menyelesaikan pembelajaran tentang Perangkat Keras Komputer!</p>
+                <p class="content-text" style="margin-top: 20px;">Semoga materi yang telah dipelajari dapat meningkatkan pemahaman kalian tentang sistem komputer dan penggunaannya dalam kehidupan sehari-hari.</p>
+            </div>
+
+            <div class="conclusion-box">
+                <h3>Apa yang Sudah Kalian Pelajari:</h3>
+                <p>✓ Pengertian dan jenis-jenis perangkat keras komputer</p>
+                <p>✓ Fungsi perangkat input dalam memasukkan data</p>
+                <p>✓ Peran perangkat output dalam menampilkan hasil</p>
+                <p>✓ Perangkat proses sebagai "otak" komputer</p>
+                <p>✓ Media penyimpanan untuk menjaga data tetap aman</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <h3 style="color: #667eea;">Terimakasih telah belajar! 🎉</h3>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="prevBtn" onclick="changeSlide(-1)">← Sebelumnya</button>
+            <span class="slide-counter"><span id="slideNum">1</span> / <span id="totalSlides">13</span></span>
+            <button class="btn" id="nextBtn" onclick="changeSlide(1)">Berikutnya →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('slideNum').textContent = currentSlide + 1;
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function changeSlide(n) {
+            showSlide(currentSlide + n);
+        }
+
+        function checkAnswer(questionNum, correctAnswer, message) {
+            const selected = document.querySelector(`input[name="q${questionNum}"]:checked`);
+            const resultDiv = document.getElementById(`result${questionNum}`);
+            
+            if (!selected) {
+                resultDiv.innerHTML = '⚠️ Pilih salah satu jawaban terlebih dahulu!';
+                resultDiv.className = 'result-message incorrect';
+                return;
+            }
+
+            if (selected.value === correctAnswer) {
+                resultDiv.innerHTML = '✅ ' + message;
+                resultDiv.className = 'result-message correct';
+            } else {
+                resultDiv.innerHTML = '❌ Jawaban belum tepat. ' + message;
+                resultDiv.className = 'result-message incorrect';
+            }
+        }
+
+        showSlide(0);
+    </script>
